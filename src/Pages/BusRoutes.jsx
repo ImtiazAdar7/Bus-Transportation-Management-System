@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom"
 
 const apiBase = "/api/routes"
 
-function SeatLayoutModal({ open, onClose, data }){
+function SeatLayoutModal({ open, onClose, data, busData, navigate }){
   if(!open) return null
   return (
     <div style={{position:'fixed', inset:0, background:'rgba(0,0,0,0.5)', display:'flex', alignItems:'center', justifyContent:'center', zIndex: 1000}}>
@@ -29,7 +29,12 @@ function SeatLayoutModal({ open, onClose, data }){
           ))}
         </div>
         <div style={{marginTop:'1rem', display:'flex', gap:'0.5rem'}}>
-          <button className="registration-button" onClick={() => alert('Proceeding to booking (placeholder)')}>Proceed to Booking</button>
+          <button className="registration-button" onClick={() => {
+            if(busData) {
+              navigate("/passenger/booking", { state: { routeData: busData } });
+              onClose();
+            }
+          }}>Proceed to Booking</button>
           <button className="back-button" onClick={onClose}>Cancel</button>
         </div>
       </div>
@@ -57,6 +62,7 @@ const BusRoutes = () => {
 
   const [layoutOpen, setLayoutOpen] = useState(false)
   const [layoutData, setLayoutData] = useState(null)
+  const [selectedBus, setSelectedBus] = useState(null)
 
   const navigate = useNavigate();
 
@@ -130,12 +136,15 @@ const BusRoutes = () => {
     }
   }
 
-  async function openSeatLayout(routeId){
-    if(!date) return
+  async function openSeatLayout(bus){
+    // Use today's date as default if no date is selected
+    const travelDate = date || new Date().toISOString().split('T')[0]
+    
+    setSelectedBus(bus)
     setLayoutOpen(true)
     setLayoutData(null)
     try{
-      const res = await fetch(`${apiBase}/seat-layout/${routeId}?date=${encodeURIComponent(date)}`)
+      const res = await fetch(`${apiBase}/seat-layout/${bus.id}?date=${encodeURIComponent(travelDate)}`)
       const data = await res.json()
       if(!res.ok){
         throw new Error(data?.message || 'Failed to load seat layout')
@@ -194,7 +203,7 @@ const BusRoutes = () => {
           <button className="registration-button" disabled={loading} onClick={fetchAllRoutes}>
             {loading ? 'Loading...' : 'Show All Routes'}
           </button>
-           <button className="registration-button"  onClick={() => navigate("/passenger")}>
+           <button className="registration-button"  onClick={() => navigate("/passenger/profile")}>
             Back
           </button>
         </div>
@@ -228,7 +237,7 @@ const BusRoutes = () => {
                   <td>৳{b.fare}</td>
                   <td>{b.rating}</td>
                   <td>
-                    <button className="registration-button" onClick={() => openSeatLayout(b.id)}>View Seats</button>
+                    <button className="registration-button" onClick={() => openSeatLayout(b)}>View Seats</button>
                   </td>
                 </tr>
               ))}
@@ -265,7 +274,7 @@ const BusRoutes = () => {
         </div>
       )}
 
-      <SeatLayoutModal open={layoutOpen} onClose={()=>setLayoutOpen(false)} data={layoutData} />
+      <SeatLayoutModal open={layoutOpen} onClose={()=>setLayoutOpen(false)} data={layoutData} busData={selectedBus} navigate={navigate} />
     </div>
   )
 }

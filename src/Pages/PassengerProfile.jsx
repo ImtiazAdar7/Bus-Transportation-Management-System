@@ -36,6 +36,7 @@ function PassengerProfile() {
         <button className="button" onClick={() => navigate("/passenger/buy-ticket")}>Buy Ticket</button>
         <button className="button" onClick={() => navigate("/passenger/bus-routes")}>Bus Routes</button>
         <button className="button" onClick={() => navigate("/passenger/reserve-ticket")}>Reserve Ticket</button>
+        <button className="button" onClick={() => navigate("/passenger/my-tickets")}>View My Tickets</button>
         <button className="logout-button" onClick={logout}>Logout</button>
       </div>
     </div>
