@@ -214,6 +214,22 @@ INSERT INTO `passengers` (`id`, `first_name`, `last_name`, `age`, `username`, `e
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `bookings`
+--
+
+CREATE TABLE `bookings` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `bus_route_id` int(11) NOT NULL,
+  `passenger_id` int(11) NOT NULL,
+  `price` decimal(10,2) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `bus_route_id` (`bus_route_id`),
+  KEY `passenger_id` (`passenger_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `website_auth_codes`
 --
 
@@ -275,6 +291,11 @@ ALTER TABLE `passengers`
   ADD UNIQUE KEY `email` (`email`);
 
 --
+-- Indexes for table `bookings`
+-- (Primary key and indexes are already defined in CREATE TABLE)
+--
+
+--
 -- Indexes for table `website_auth_codes`
 --
 ALTER TABLE `website_auth_codes`
@@ -314,6 +335,19 @@ ALTER TABLE `drivers`
 --
 ALTER TABLE `passengers`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `bookings`
+--
+ALTER TABLE `bookings`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Constraints for table `bookings`
+--
+ALTER TABLE `bookings`
+  ADD CONSTRAINT `fk_bookings_bus_route` FOREIGN KEY (`bus_route_id`) REFERENCES `bus_routes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_bookings_passenger` FOREIGN KEY (`passenger_id`) REFERENCES `passengers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- AUTO_INCREMENT for table `website_auth_codes`

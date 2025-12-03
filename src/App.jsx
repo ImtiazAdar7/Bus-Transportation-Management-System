@@ -19,6 +19,8 @@ import DriverProfile from './Pages/DriverProfile.jsx'
 import AssignDriver from './Pages/AssignDriver.jsx'
 import BusRoutes from './Pages/BusRoutes.jsx'
 import Analytics from './Pages/Analytics.jsx'
+import Booking from './Pages/Booking.jsx'
+import MyTickets from './Pages/MyTickets.jsx'
 import './App.css'
 
 function App() {
@@ -40,6 +42,8 @@ function App() {
           <Route path="/passenger/login" element={<PassengerLogin />} />
           <Route path="/passenger/registration" element={<PassengerRegistration />} />
           <Route path="/passenger/bus-routes" element={<BusRoutes />} />
+          <Route path="/passenger/booking" element={<Booking />} />
+          <Route path="/passenger/my-tickets" element={<MyTickets />} />
           {/* Driver Route */}
           <Route path="/driver/login" element={<DriverLogin />} />
           <Route path="/driver/registration" element={<DriverRegistration />} />
