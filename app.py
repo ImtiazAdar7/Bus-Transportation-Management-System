@@ -4,10 +4,12 @@ from flask_bcrypt import Bcrypt
 from routes.passenger_routes import passenger_bp
 from routes.admin_routes import admin_bp
 from routes.driver_routes import driver_bp
+from routes.route_routes import route_bp
+from routes.analytics_routes import analytics_bp
 
 app = Flask(__name__)
 CORS(app)
-bcrypt = Bcrypt(app)   # IMPORTANT!
+bcrypt = Bcrypt(app)  # IMPORTANT!
 app.config["SECRET_KEY"] = "busmanagement-secret-key"
 
 app.register_blueprint(passenger_bp)
@@ -16,10 +18,15 @@ app.register_blueprint(admin_bp)
 
 app.register_blueprint(driver_bp)
 
+app.register_blueprint(route_bp)
+
+app.register_blueprint(analytics_bp)
+
 
 @app.get("/")
 def home():
     return {"message": "Bus Management System Project For CSE327"}
+
 
 if __name__ == "__main__":
     app.run(debug=True)
