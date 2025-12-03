@@ -1,37 +1,16 @@
-# Bus Transportation Management System
+# React + Vite
 
-Flask backend + React (Vite) frontend.
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-## Quick start
+Currently, two official plugins are available:
 
-Run backend:
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-```
-python app.py
-```
+## React Compiler
 
-Run frontend:
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-```
-npm install
-npm run dev
-```
+## Expanding the ESLint configuration
 
-Backend has CORS enabled. Default API base is the same origin where Flask is running.
-
-## New Features: Bus Search & Seat Layout
-
-- Search by `From`, `To`, and travel `Date`.
-- Filter by bus type (AC/Non-AC), price range, and operator.
-- Sort by price, rating, or departure time.
-- If no exact match, suggestions show alternative routes that share source/destination.
-- View seat layout and proceed to booking (placeholder).
-
-### API Endpoints
-
-- `GET /api/routes/search?from=Feni&to=Dhaka&date=2025-12-03&bus_type=AC&price_min=500&price_max=1500&operator=Green%20Line&sort_by=price`
-  - Returns `{ buses: [...], suggestions: [...] }`.
-- `GET /api/routes/seat-layout/:route_id?date=2025-12-03`
-  - Returns `{ route, travel_date, available_seats, layout }`.
-
-Note: Fare, bus type, and rating are enriched from brand heuristics without changing the DB schema. Seat availability equals bus capacity until booking is implemented.
+If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
