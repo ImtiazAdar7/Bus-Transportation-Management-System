@@ -61,7 +61,17 @@ class AdminController:
 
     @staticmethod
     def login(data):
-        """Login as admin and return JWT token and status code."""
+        """
+        Login as admin and return JWT token.
+
+        Args:
+            data (dict): Login credentials with keys:
+                - username (str)
+                - password (str)
+
+        Returns:
+            tuple: (dict with message, JWT token, username, HTTP status code)
+        """
 
         # Find admin
         admin = AdminModel.find_by_username(data["username"])
@@ -91,13 +101,26 @@ class AdminController:
 
     @staticmethod
     def get_all_drivers():
-        """Return all drivers."""
+        """
+        Get all drivers in the system.
+
+        Returns:
+            tuple: (dict with drivers list, HTTP status code)
+        """
         drivers = DriverModel.get_all_drivers()
         return {"drivers": drivers}, 200
 
     @staticmethod
     def assign_driver(driver_id):
-        """Assign a driver and remove from drivers table."""
+        """
+        Assign a driver to assigned_drivers table and remove from drivers table.
+
+        Args:
+            driver_id (int): ID of the driver to assign
+
+        Returns:
+            tuple: (dict with message, HTTP status code)
+        """
         driver = DriverModel.find_by_id(driver_id)
         if not driver:
             return {"message": "Driver not found"}, 404
@@ -112,7 +135,15 @@ class AdminController:
 
     @staticmethod
     def delete_driver(driver_id):
-        """Delete a driver by ID."""
+        """
+        Delete a driver from the system.
+
+        Args:
+            driver_id (int): ID of the driver to delete
+
+        Returns:
+            tuple: (dict with message, HTTP status code)
+        """
         success = DriverModel.delete_driver(driver_id)
         if success:
             return {"message": "Driver deleted successfully"}, 200

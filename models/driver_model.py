@@ -5,7 +5,15 @@ class DriverModel:
     """Model to manage drivers."""
     @staticmethod
     def find_by_email(email):
-        """Find a driver by email."""
+        """
+        Find a driver by email address.
+
+        Args:
+            email (str): Email address of the driver
+
+        Returns:
+            dict or None: Driver dictionary if found, None otherwise
+        """
         db = Config.get_db()
         cursor = db.cursor(dictionary=True)
         cursor.execute("SELECT * FROM drivers WHERE email=%s", (email,))
@@ -16,7 +24,23 @@ class DriverModel:
 
     @staticmethod
     def create_driver(data):
-        """Insert a new driver record."""
+        """
+        Insert a new driver record into the database.
+
+        Args:
+            data (dict): Driver details with keys:
+                - first_name (str)
+                - last_name (str)
+                - age (str)
+                - username (str)
+                - email (str)
+                - dob (str, optional)
+                - gender (str)
+                - password (str): Hashed password
+
+        Returns:
+            bool: True if successful
+        """
         db = Config.get_db()
         cursor = db.cursor()
 
@@ -38,7 +62,12 @@ class DriverModel:
 
     @staticmethod
     def get_all_drivers():
-        """Return all drivers."""
+        """
+        Get all drivers from the database.
+
+        Returns:
+            List[Dict]: List of all driver dictionaries
+        """
         db = Config.get_db()
         cursor = db.cursor(dictionary=True)
         cursor.execute("SELECT * FROM drivers")
@@ -49,7 +78,15 @@ class DriverModel:
 
     @staticmethod
     def find_by_id(driver_id):
-        """Find a driver by ID."""
+        """
+        Find a driver by ID.
+
+        Args:
+            driver_id (int): ID of the driver
+
+        Returns:
+            dict or None: Driver dictionary if found, None otherwise
+        """
         db = Config.get_db()
         cursor = db.cursor(dictionary=True)
         cursor.execute("SELECT * FROM drivers WHERE id=%s", (driver_id,))
@@ -60,7 +97,15 @@ class DriverModel:
 
     @staticmethod
     def delete_driver(driver_id):
-        """Delete a driver by ID."""
+        """
+        Delete a driver from the database.
+
+        Args:
+            driver_id (int): ID of the driver to delete
+
+        Returns:
+            bool: True if driver was deleted, False otherwise
+        """
         db = Config.get_db()
         cursor = db.cursor()
         cursor.execute("DELETE FROM drivers WHERE id=%s", (driver_id,))

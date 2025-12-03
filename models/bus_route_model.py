@@ -18,6 +18,12 @@ class BusRouteModel:
 
     @staticmethod
     def get_all_routes() -> List[Dict]:
+        """
+        Get all bus routes from the database.
+
+        Returns:
+            List[Dict]: List of all bus route dictionaries
+        """
         return BusRouteModel._fetchall("SELECT * FROM bus_routes")
 
     @staticmethod
@@ -57,6 +63,20 @@ class BusRouteModel:
 
     @staticmethod
     def all_enriched_routes() -> List[Dict]:
+        """
+        Get all routes with enriched data (fare, rating, bus_type, etc.).
+
+        Returns:
+            List[Dict]: List of enriched route dictionaries with additional fields:
+                - bus_type: AC or Non-AC
+                - operator: Bus operator name
+                - rating: Bus rating
+                - fare: Estimated fare
+                - departure_time: Departure time as string
+                - seat_availability: Available seats
+                - from: Source location
+                - to: Destination location
+        """
         routes = BusRouteModel.get_all_routes()
         enriched: List[Dict] = []
         for row in routes:
@@ -82,6 +102,14 @@ class BusRouteModel:
 
     @staticmethod
     def distinct_stations_and_operators() -> Dict[str, List[str]]:
+        """
+        Get distinct stations and operators from all routes.
+
+        Returns:
+            Dict[str, List[str]]: Dictionary with keys:
+                - stations: Sorted list of unique station names
+                - operators: Sorted list of unique operator names
+        """
         routes = BusRouteModel.get_all_routes()
         stations = set()
         operators = set()
@@ -112,8 +140,20 @@ class BusRouteModel:
         sort_by: Optional[str] = None,
     ) -> List[Dict]:
         """
-        Search routes by simple matching on `route` field formatted as "Src-Dst".
-        Since the schema lacks fare/type, we enrich rows on the fly.
+        Search routes by source and destination with optional filters.
+
+        Args:
+            src (str): Source location
+            dst (str): Destination location
+            departure_date (Optional[str]): Travel date (currently not used in filtering)
+            bus_type (Optional[str]): Filter by bus type (AC/Non-AC)
+            operator (Optional[str]): Filter by operator name
+            price_min (Optional[float]): Minimum price filter
+            price_max (Optional[float]): Maximum price filter
+            sort_by (Optional[str]): Sort by 'price', 'rating', or 'departure'
+
+        Returns:
+            List[Dict]: List of enriched route dictionaries matching the search criteria
         """
         # Base fetch and in-Python filter/enrich for flexibility
         routes = BusRouteModel.get_all_routes()
@@ -205,7 +245,14 @@ class BusRouteModel:
     @staticmethod
     def suggest_alternatives(src: str, dst: str) -> List[Dict]:
         """
-        Suggest routes that share the source or the destination when no exact match.
+        Suggest alternative routes that share the source or destination when no exact match.
+
+        Args:
+            src (str): Source location
+            dst (str): Destination location
+
+        Returns:
+            List[Dict]: List of up to 10 alternative route suggestions
         """
         routes = BusRouteModel.get_all_routes()
         src_norm = (src or "").strip().lower()
@@ -240,6 +287,15 @@ class BusRouteModel:
 
     @staticmethod
     def get_route_by_id(route_id: int) -> Optional[Dict]:
+        """
+        Get a bus route by its ID.
+
+        Args:
+            route_id (int): ID of the route to retrieve
+
+        Returns:
+            Optional[Dict]: Route dictionary if found, None otherwise
+        """
         rows = BusRouteModel._fetchall(
             "SELECT * FROM bus_routes WHERE id=%s", (route_id,)
         )

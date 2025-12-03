@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>models.bus_route_model &mdash; Bus Transportation Management System 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=f2a433a1"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Bus Transportation Management System
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Bus-Transportation-Management-System-main</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Bus Transportation Management System</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">models.bus_route_model</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for models.bus_route_model</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;Author: Samiul Ahamed Fhyas&#39;&#39;&#39;</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">config</span><span class="w"> </span><span class="kn">import</span> <span class="n">Config</span>
+
+
+<div class="viewcode-block" id="BusRouteModel">
+<a class="viewcode-back" href="../../models.bus_route_model.html#models.bus_route_model.BusRouteModel">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">BusRouteModel</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Data access for bus routes and list of buses.&quot;&quot;&quot;</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_fetchall</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="n">Tuple</span> <span class="o">=</span> <span class="p">())</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]:</span>
+        <span class="n">db</span> <span class="o">=</span> <span class="n">Config</span><span class="o">.</span><span class="n">get_db</span><span class="p">()</span>
+        <span class="n">cur</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">cursor</span><span class="p">(</span><span class="n">dictionary</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+        <span class="n">rows</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+        <span class="n">cur</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">rows</span>
+
+<div class="viewcode-block" id="BusRouteModel.get_all_routes">
+<a class="viewcode-back" href="../../models.bus_route_model.html#models.bus_route_model.BusRouteModel.get_all_routes">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_all_routes</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get all bus routes from the database.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            List[Dict]: List of all bus route dictionaries</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">BusRouteModel</span><span class="o">.</span><span class="n">_fetchall</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM bus_routes&quot;</span><span class="p">)</span></div>
+
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_parse_route</span><span class="p">(</span><span class="n">r</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">r</span> <span class="ow">or</span> <span class="s2">&quot;-&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">r</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">a</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="n">b</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_brand_to_type</span><span class="p">(</span><span class="n">brand</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">brand</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;Non-AC&quot;</span>
+        <span class="n">brand_lower</span> <span class="o">=</span> <span class="n">brand</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">k</span> <span class="ow">in</span> <span class="n">brand_lower</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;green&quot;</span><span class="p">,</span> <span class="s2">&quot;hanif&quot;</span><span class="p">]):</span>
+            <span class="k">return</span> <span class="s2">&quot;AC&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;Non-AC&quot;</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_brand_rating</span><span class="p">(</span><span class="n">brand</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">brand</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mf">3.5</span>
+        <span class="n">bl</span> <span class="o">=</span> <span class="n">brand</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">if</span> <span class="s2">&quot;green&quot;</span> <span class="ow">in</span> <span class="n">bl</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mf">4.5</span>
+        <span class="k">if</span> <span class="s2">&quot;hanif&quot;</span> <span class="ow">in</span> <span class="n">bl</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mf">4.2</span>
+        <span class="k">return</span> <span class="mf">4.0</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_estimate_fare</span><span class="p">(</span><span class="n">brand</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">src</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">dst</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="n">base</span> <span class="o">=</span> <span class="mf">700.0</span>
+        <span class="k">if</span> <span class="n">BusRouteModel</span><span class="o">.</span><span class="n">_brand_to_type</span><span class="p">(</span><span class="n">brand</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;AC&quot;</span><span class="p">:</span>
+            <span class="n">base</span> <span class="o">+=</span> <span class="mf">300.0</span>
+        <span class="n">approx</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">abs</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">src</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">dst</span><span class="p">))</span> <span class="o">+</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">src</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">dst</span><span class="p">))</span> <span class="o">//</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">round</span><span class="p">(</span><span class="n">base</span> <span class="o">+</span> <span class="n">approx</span> <span class="o">*</span> <span class="mf">20.0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+<div class="viewcode-block" id="BusRouteModel.all_enriched_routes">
+<a class="viewcode-back" href="../../models.bus_route_model.html#models.bus_route_model.BusRouteModel.all_enriched_routes">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">all_enriched_routes</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get all routes with enriched data (fare, rating, bus_type, etc.).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            List[Dict]: List of enriched route dictionaries with additional fields:</span>
+<span class="sd">                - bus_type: AC or Non-AC</span>
+<span class="sd">                - operator: Bus operator name</span>
+<span class="sd">                - rating: Bus rating</span>
+<span class="sd">                - fare: Estimated fare</span>
+<span class="sd">                - departure_time: Departure time as string</span>
+<span class="sd">                - seat_availability: Available seats</span>
+<span class="sd">                - from: Source location</span>
+<span class="sd">                - to: Destination location</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">routes</span> <span class="o">=</span> <span class="n">BusRouteModel</span><span class="o">.</span><span class="n">get_all_routes</span><span class="p">()</span>
+        <span class="n">enriched</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">routes</span><span class="p">:</span>
+            <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">BusRouteModel</span><span class="o">.</span><span class="n">_parse_route</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;route&quot;</span><span class="p">))</span>
+            <span class="n">row_copy</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+            <span class="n">row_copy</span><span class="p">[</span><span class="s2">&quot;bus_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">BusRouteModel</span><span class="o">.</span><span class="n">_brand_to_type</span><span class="p">(</span>
+                <span class="n">row_copy</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;brand&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">row_copy</span><span class="p">[</span><span class="s2">&quot;operator&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row_copy</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;brand&quot;</span><span class="p">)</span>
+            <span class="n">row_copy</span><span class="p">[</span><span class="s2">&quot;rating&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">BusRouteModel</span><span class="o">.</span><span class="n">_brand_rating</span><span class="p">(</span><span class="n">row_copy</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;brand&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
+            <span class="n">row_copy</span><span class="p">[</span><span class="s2">&quot;fare&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">BusRouteModel</span><span class="o">.</span><span class="n">_estimate_fare</span><span class="p">(</span>
+                <span class="n">row_copy</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;brand&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span>
+            <span class="p">)</span>
+            <span class="n">row_copy</span><span class="p">[</span><span class="s2">&quot;departure_time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="nb">str</span><span class="p">(</span><span class="n">row_copy</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;time&quot;</span><span class="p">))</span> <span class="k">if</span> <span class="n">row_copy</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;time&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+            <span class="p">)</span>
+            <span class="n">row_copy</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;time&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="n">row_copy</span><span class="p">[</span><span class="s2">&quot;seat_availability&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">row_copy</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;capacity&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">row_copy</span><span class="p">[</span><span class="s2">&quot;from&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span>
+            <span class="n">row_copy</span><span class="p">[</span><span class="s2">&quot;to&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">b</span>
+            <span class="n">enriched</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row_copy</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">enriched</span></div>
+
+
+<div class="viewcode-block" id="BusRouteModel.distinct_stations_and_operators">
+<a class="viewcode-back" href="../../models.bus_route_model.html#models.bus_route_model.BusRouteModel.distinct_stations_and_operators">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">distinct_stations_and_operators</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get distinct stations and operators from all routes.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Dict[str, List[str]]: Dictionary with keys:</span>
+<span class="sd">                - stations: Sorted list of unique station names</span>
+<span class="sd">                - operators: Sorted list of unique operator names</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">routes</span> <span class="o">=</span> <span class="n">BusRouteModel</span><span class="o">.</span><span class="n">get_all_routes</span><span class="p">()</span>
+        <span class="n">stations</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="n">operators</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">routes</span><span class="p">:</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;route&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">BusRouteModel</span><span class="o">.</span><span class="n">_parse_route</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">a</span><span class="p">:</span>
+                <span class="n">stations</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">b</span><span class="p">:</span>
+                <span class="n">stations</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+            <span class="n">brand</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;brand&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">brand</span><span class="p">:</span>
+                <span class="n">operators</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">brand</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;stations&quot;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">stations</span><span class="p">),</span>
+            <span class="s2">&quot;operators&quot;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">operators</span><span class="p">),</span>
+        <span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="BusRouteModel.search_routes">
+<a class="viewcode-back" href="../../models.bus_route_model.html#models.bus_route_model.BusRouteModel.search_routes">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">search_routes</span><span class="p">(</span>
+        <span class="n">src</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">dst</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">departure_date</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">bus_type</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">operator</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">price_min</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">price_max</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">sort_by</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Search routes by source and destination with optional filters.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            src (str): Source location</span>
+<span class="sd">            dst (str): Destination location</span>
+<span class="sd">            departure_date (Optional[str]): Travel date (currently not used in filtering)</span>
+<span class="sd">            bus_type (Optional[str]): Filter by bus type (AC/Non-AC)</span>
+<span class="sd">            operator (Optional[str]): Filter by operator name</span>
+<span class="sd">            price_min (Optional[float]): Minimum price filter</span>
+<span class="sd">            price_max (Optional[float]): Maximum price filter</span>
+<span class="sd">            sort_by (Optional[str]): Sort by &#39;price&#39;, &#39;rating&#39;, or &#39;departure&#39;</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            List[Dict]: List of enriched route dictionaries matching the search criteria</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Base fetch and in-Python filter/enrich for flexibility</span>
+        <span class="n">routes</span> <span class="o">=</span> <span class="n">BusRouteModel</span><span class="o">.</span><span class="n">get_all_routes</span><span class="p">()</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">parse_route</span><span class="p">(</span><span class="n">r</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">r</span> <span class="ow">or</span> <span class="s2">&quot;-&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">r</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">a</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="n">b</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">brand_to_type</span><span class="p">(</span><span class="n">brand</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">brand</span><span class="p">:</span>
+                <span class="k">return</span> <span class="s2">&quot;Non-AC&quot;</span>
+            <span class="n">brand_lower</span> <span class="o">=</span> <span class="n">brand</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+            <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">k</span> <span class="ow">in</span> <span class="n">brand_lower</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;green&quot;</span><span class="p">,</span> <span class="s2">&quot;hanif&quot;</span><span class="p">]):</span>
+                <span class="k">return</span> <span class="s2">&quot;AC&quot;</span>
+            <span class="k">return</span> <span class="s2">&quot;Non-AC&quot;</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">brand_rating</span><span class="p">(</span><span class="n">brand</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">brand</span><span class="p">:</span>
+                <span class="k">return</span> <span class="mf">3.5</span>
+            <span class="n">bl</span> <span class="o">=</span> <span class="n">brand</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+            <span class="k">if</span> <span class="s2">&quot;green&quot;</span> <span class="ow">in</span> <span class="n">bl</span><span class="p">:</span>
+                <span class="k">return</span> <span class="mf">4.5</span>
+            <span class="k">if</span> <span class="s2">&quot;hanif&quot;</span> <span class="ow">in</span> <span class="n">bl</span><span class="p">:</span>
+                <span class="k">return</span> <span class="mf">4.2</span>
+            <span class="k">return</span> <span class="mf">4.0</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">estimate_fare</span><span class="p">(</span><span class="n">brand</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">src</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">dst</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+            <span class="n">base</span> <span class="o">=</span> <span class="mf">700.0</span>
+            <span class="k">if</span> <span class="n">brand_to_type</span><span class="p">(</span><span class="n">brand</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;AC&quot;</span><span class="p">:</span>
+                <span class="n">base</span> <span class="o">+=</span> <span class="mf">300.0</span>
+          
+            <span class="n">approx</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">abs</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">src</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">dst</span><span class="p">))</span> <span class="o">+</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">src</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">dst</span><span class="p">))</span> <span class="o">//</span> <span class="mi">4</span><span class="p">)</span>
+            <span class="k">return</span> <span class="nb">round</span><span class="p">(</span><span class="n">base</span> <span class="o">+</span> <span class="n">approx</span> <span class="o">*</span> <span class="mf">20.0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="c1"># Normalize inputs</span>
+        <span class="n">src_norm</span> <span class="o">=</span> <span class="p">(</span><span class="n">src</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="n">dst_norm</span> <span class="o">=</span> <span class="p">(</span><span class="n">dst</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="n">type_norm</span> <span class="o">=</span> <span class="p">(</span><span class="n">bus_type</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">or</span> <span class="kc">None</span>
+        <span class="n">op_norm</span> <span class="o">=</span> <span class="p">(</span><span class="n">operator</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">or</span> <span class="kc">None</span>
+
+        <span class="n">enriched</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">routes</span><span class="p">:</span>
+            <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">parse_route</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;route&quot;</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">a</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">!=</span> <span class="n">src_norm</span> <span class="ow">or</span> <span class="n">b</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">!=</span> <span class="n">dst_norm</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="n">row_copy</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>  <span class="c1"># avoid mutating original</span>
+            <span class="n">bt</span> <span class="o">=</span> <span class="n">brand_to_type</span><span class="p">(</span><span class="n">row_copy</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;brand&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
+            <span class="n">row_copy</span><span class="p">[</span><span class="s2">&quot;bus_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bt</span>
+            <span class="n">row_copy</span><span class="p">[</span><span class="s2">&quot;operator&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row_copy</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;brand&quot;</span><span class="p">)</span>
+            <span class="n">row_copy</span><span class="p">[</span><span class="s2">&quot;rating&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">brand_rating</span><span class="p">(</span><span class="n">row_copy</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;brand&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
+            <span class="n">row_copy</span><span class="p">[</span><span class="s2">&quot;fare&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">estimate_fare</span><span class="p">(</span><span class="n">row_copy</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;brand&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+            <span class="c1"># Normalize time for JSON and avoid exposing raw timedelta/time object</span>
+            <span class="n">row_copy</span><span class="p">[</span><span class="s2">&quot;departure_time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="nb">str</span><span class="p">(</span><span class="n">row_copy</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;time&quot;</span><span class="p">))</span> <span class="k">if</span> <span class="n">row_copy</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;time&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="s2">&quot;time&quot;</span> <span class="ow">in</span> <span class="n">row_copy</span><span class="p">:</span>
+                <span class="c1"># Remove the original non-JSON-serializable value</span>
+                <span class="n">row_copy</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;time&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="n">row_copy</span><span class="p">[</span><span class="s2">&quot;seat_availability&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">row_copy</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;capacity&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">row_copy</span><span class="p">[</span><span class="s2">&quot;from&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span>
+            <span class="n">row_copy</span><span class="p">[</span><span class="s2">&quot;to&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">b</span>
+
+            <span class="c1"># Apply filters</span>
+            <span class="k">if</span> <span class="n">type_norm</span> <span class="ow">and</span> <span class="n">row_copy</span><span class="p">[</span><span class="s2">&quot;bus_type&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">!=</span> <span class="n">type_norm</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">op_norm</span> <span class="ow">and</span> <span class="p">(</span><span class="n">row_copy</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;operator&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">!=</span> <span class="n">op_norm</span><span class="p">):</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">price_min</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">row_copy</span><span class="p">[</span><span class="s2">&quot;fare&quot;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="nb">float</span><span class="p">(</span><span class="n">price_min</span><span class="p">):</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">price_max</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">row_copy</span><span class="p">[</span><span class="s2">&quot;fare&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="nb">float</span><span class="p">(</span><span class="n">price_max</span><span class="p">):</span>
+                <span class="k">continue</span>
+            <span class="n">enriched</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row_copy</span><span class="p">)</span>
+
+        <span class="c1"># Sorting</span>
+        <span class="k">if</span> <span class="n">sort_by</span><span class="p">:</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="n">sort_by</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;price&quot;</span><span class="p">:</span>
+                <span class="n">enriched</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;fare&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;rating&quot;</span><span class="p">:</span>
+                <span class="n">enriched</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;rating&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;departure&quot;</span><span class="p">:</span>
+                <span class="n">enriched</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;departure_time&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">enriched</span></div>
+
+
+<div class="viewcode-block" id="BusRouteModel.suggest_alternatives">
+<a class="viewcode-back" href="../../models.bus_route_model.html#models.bus_route_model.BusRouteModel.suggest_alternatives">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">suggest_alternatives</span><span class="p">(</span><span class="n">src</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">dst</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Suggest alternative routes that share the source or destination when no exact match.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            src (str): Source location</span>
+<span class="sd">            dst (str): Destination location</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            List[Dict]: List of up to 10 alternative route suggestions</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">routes</span> <span class="o">=</span> <span class="n">BusRouteModel</span><span class="o">.</span><span class="n">get_all_routes</span><span class="p">()</span>
+        <span class="n">src_norm</span> <span class="o">=</span> <span class="p">(</span><span class="n">src</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="n">dst_norm</span> <span class="o">=</span> <span class="p">(</span><span class="n">dst</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+        <span class="n">suggestions</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">routes</span><span class="p">:</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;route&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s2">&quot;-&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">r</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">r</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">a</span> <span class="o">==</span> <span class="n">src_norm</span> <span class="ow">or</span> <span class="n">b</span> <span class="o">==</span> <span class="n">dst_norm</span> <span class="ow">or</span> <span class="n">b</span> <span class="o">==</span> <span class="n">src_norm</span> <span class="ow">or</span> <span class="n">a</span> <span class="o">==</span> <span class="n">dst_norm</span><span class="p">:</span>
+                <span class="n">suggestions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="p">{</span>
+                        <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">row</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">),</span>
+                        <span class="s2">&quot;operator&quot;</span><span class="p">:</span> <span class="n">row</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;brand&quot;</span><span class="p">),</span>
+                        <span class="s2">&quot;route&quot;</span><span class="p">:</span> <span class="n">row</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;route&quot;</span><span class="p">),</span>
+                        <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;time&quot;</span><span class="p">)),</span>
+                        <span class="s2">&quot;capacity&quot;</span><span class="p">:</span> <span class="n">row</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;capacity&quot;</span><span class="p">),</span>
+                    <span class="p">}</span>
+                <span class="p">)</span>
+        <span class="c1"># Deduplicate by (route,time,operator)</span>
+        <span class="n">seen</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="n">unique</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">suggestions</span><span class="p">:</span>
+            <span class="n">k</span> <span class="o">=</span> <span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="s2">&quot;route&quot;</span><span class="p">],</span> <span class="n">s</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">],</span> <span class="n">s</span><span class="p">[</span><span class="s2">&quot;operator&quot;</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">seen</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">seen</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+            <span class="n">unique</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">unique</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="BusRouteModel.get_route_by_id">
+<a class="viewcode-back" href="../../models.bus_route_model.html#models.bus_route_model.BusRouteModel.get_route_by_id">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_route_by_id</span><span class="p">(</span><span class="n">route_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get a bus route by its ID.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            route_id (int): ID of the route to retrieve</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Optional[Dict]: Route dictionary if found, None otherwise</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">rows</span> <span class="o">=</span> <span class="n">BusRouteModel</span><span class="o">.</span><span class="n">_fetchall</span><span class="p">(</span>
+            <span class="s2">&quot;SELECT * FROM bus_routes WHERE id=</span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">route_id</span><span class="p">,)</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">rows</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">rows</span> <span class="k">else</span> <span class="kc">None</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Imtiaz Ahmed, Nahid Sarwar Ratul, Samiul Ahamed Fhyas, Sakibur Rahman Somoy.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

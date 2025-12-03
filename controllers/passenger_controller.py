@@ -27,7 +27,23 @@ class PassengerController:
 
     @staticmethod
     def register(data):
-        """Register a new passenger."""
+        """
+        Register a new passenger.
+
+        Args:
+            data (dict): Passenger details with keys:
+                - first_name (str)
+                - last_name (str)
+                - age (str)
+                - username (str)
+                - email (str)
+                - dob (str, optional)
+                - gender (str)
+                - password (str)
+
+        Returns:
+            tuple: (dict with message, HTTP status code)
+        """
         existing = PassengerModel.find_by_email(data["email"])
         if existing:
             return jsonify({"message": "Email already exists"}), 400
@@ -40,7 +56,17 @@ class PassengerController:
 
     @staticmethod
     def login(data):
-        """Passenger login and return JWT token."""
+        """
+        Login a passenger and return JWT token.
+
+        Args:
+            data (dict): Login credentials with keys:
+                - email (str)
+                - password (str)
+
+        Returns:
+            tuple: (dict with message, JWT token, username, HTTP status code)
+        """
         user = PassengerModel.find_by_email(data["email"])
         if not user:
             return jsonify({"message": "User not found"}), 404
@@ -65,7 +91,18 @@ class PassengerController:
 
     @staticmethod
     def create_booking(data, token):
-        """Create a new booking for the authenticated passenger."""
+        """
+        Create a new booking for the authenticated passenger.
+
+        Args:
+            data (dict): Booking details with keys:
+                - bus_route_id (int): ID of the bus route to book
+                - price (float): Price of the booking
+            token (str): JWT authentication token
+
+        Returns:
+            tuple: (dict with message and booking_id, HTTP status code)
+        """
         try:
             passenger_id = PassengerController._verify_token(token)
             if not passenger_id:
@@ -90,7 +127,15 @@ class PassengerController:
 
     @staticmethod
     def get_my_bookings(token):
-        """Get all bookings for the authenticated passenger."""
+        """
+        Get all bookings for the authenticated passenger.
+
+        Args:
+            token (str): JWT authentication token
+
+        Returns:
+            tuple: (dict with list of bookings, HTTP status code)
+        """
         try:
             passenger_id = PassengerController._verify_token(token)
             if not passenger_id:

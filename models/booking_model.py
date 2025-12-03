@@ -51,7 +51,17 @@ class BookingModel:
     
     @staticmethod
     def create_booking(bus_route_id: int, passenger_id: int, price: float) -> int:
-        """Create a new booking and return the booking ID."""
+        """
+        Create a new booking and return the booking ID.
+
+        Args:
+            bus_route_id (int): ID of the bus route to book
+            passenger_id (int): ID of the passenger making the booking
+            price (float): Price of the booking
+
+        Returns:
+            int: The ID of the newly created booking
+        """
         # Ensure table exists before creating booking
         BookingModel.create_table()
         
@@ -73,7 +83,15 @@ class BookingModel:
     
     @staticmethod
     def get_bookings_by_passenger(passenger_id: int) -> List[Dict]:
-        """Get all bookings for a specific passenger."""
+        """
+        Get all bookings for a specific passenger.
+
+        Args:
+            passenger_id (int): ID of the passenger
+
+        Returns:
+            List[Dict]: List of booking dictionaries with route details, ordered by booking ID (newest first)
+        """
         # Ensure table exists before querying
         BookingModel.create_table()
         
@@ -116,7 +134,15 @@ class BookingModel:
     
     @staticmethod
     def get_booking_by_id(booking_id: int) -> Optional[Dict]:
-        """Get a booking by its ID."""
+        """
+        Get a booking by its ID.
+
+        Args:
+            booking_id (int): ID of the booking to retrieve
+
+        Returns:
+            Optional[Dict]: Booking dictionary if found, None otherwise
+        """
         # Ensure table exists before querying
         BookingModel.create_table()
         

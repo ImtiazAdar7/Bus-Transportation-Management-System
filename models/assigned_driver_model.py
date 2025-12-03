@@ -5,7 +5,15 @@ class AssignedDriverModel:
     """Model to manage assigned drivers."""
     @staticmethod
     def create_assigned_driver(driver):
-        """Assign a driver to the assigned_drivers table."""
+        """
+        Assign a driver to the assigned_drivers table.
+
+        Args:
+            driver (dict): Driver dictionary with all driver fields including id
+
+        Returns:
+            bool: True if successful
+        """
         db = Config.get_db()
         cursor = db.cursor()
 
@@ -27,7 +35,12 @@ class AssignedDriverModel:
 
     @staticmethod
     def get_all_assigned_drivers():
-        """Return all assigned drivers."""
+        """
+        Get all assigned drivers from the database.
+
+        Returns:
+            List[Dict]: List of all assigned driver dictionaries
+        """
         db = Config.get_db()
         cursor = db.cursor(dictionary=True)
         cursor.execute("SELECT * FROM assigned_drivers")

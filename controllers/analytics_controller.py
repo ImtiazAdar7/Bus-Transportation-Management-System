@@ -8,7 +8,18 @@ class AnalyticsController:
 
     @staticmethod
     def get_stats():
-        """Return passenger-relevant statistics for analytics dashboard."""
+        """
+        Get analytics and statistics for the dashboard.
+
+        Returns:
+            tuple: (dict with statistics including:
+                - total_routes (int)
+                - top_routes (list): Most popular routes
+                - top_destinations (list): Most popular destinations
+                - bus_type_distribution (list): Count of AC vs Non-AC buses
+                - fare_comparison (list): Average fare by operator
+            , HTTP status code)
+        """
         routes = BusRouteModel.all_enriched_routes()
 
         # Route popularity (count by from-to pair)

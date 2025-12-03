@@ -8,6 +8,23 @@ class RouteController:
 
     @staticmethod
     def search(params: Dict[str, Any]):
+        """
+        Search for bus routes based on various filters.
+
+        Args:
+            params (dict): Search parameters with optional keys:
+                - from (str): Source location
+                - to (str): Destination location
+                - date (str): Travel date
+                - bus_type (str, optional): Filter by bus type (AC/Non-AC)
+                - operator (str, optional): Filter by operator name
+                - price_min (float, optional): Minimum price filter
+                - price_max (float, optional): Maximum price filter
+                - sort_by (str, optional): Sort by 'price', 'rating', or 'departure'
+
+        Returns:
+            tuple: (dict with buses list and suggestions, HTTP status code)
+        """
         src = (params.get("from") or params.get("src") or "").strip()
         dst = (params.get("to") or params.get("dst") or "").strip()
         date = (params.get("date") or params.get("travel_date") or "").strip()
@@ -54,7 +71,16 @@ class RouteController:
 
     @staticmethod
     def seat_layout(route_id: int, travel_date: str):
-        """Return a very simple seat layout for the bus (no booking DB yet)."""
+        """
+        Get seat layout for a specific bus route.
+
+        Args:
+            route_id (int): ID of the bus route
+            travel_date (str): Date of travel
+
+        Returns:
+            tuple: (dict with route details, travel_date, available_seats, and layout, HTTP status code)
+        """
         route = BusRouteModel.get_route_by_id(route_id)
         if not route:
             return {"message": "Route not found"}, 404
@@ -113,10 +139,22 @@ class RouteController:
 
     @staticmethod
     def meta():
+        """
+        Get metadata about available stations and operators.
+
+        Returns:
+            tuple: (dict with stations and operators lists, HTTP status code)
+        """
         meta = BusRouteModel.distinct_stations_and_operators()
         return meta, 200
 
     @staticmethod
     def all_routes():
+        """
+        Get all bus routes with enriched data (fare, rating, bus_type, etc.).
+
+        Returns:
+            tuple: (dict with buses list, HTTP status code)
+        """
         routes = BusRouteModel.all_enriched_routes()
         return {"buses": routes}, 200
