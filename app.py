@@ -22,11 +22,9 @@ app.register_blueprint(route_bp)
 
 app.register_blueprint(analytics_bp)
 
-
 @app.get("/")
 def home():
     return {"message": "Bus Management System Project For CSE327"}
-
 
 if __name__ == "__main__":
     app.run(debug=True)
