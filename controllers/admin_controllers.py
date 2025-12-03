@@ -61,7 +61,18 @@ class AdminController:
 
     @staticmethod
     def login(data):
-        """Login as admin and return JWT token and status code."""
+        """
+        Login as admin and return JWT token.
+
+        Args:
+            data (dict): Login credentials with keys:
+                - username (str): Admin username
+                - password (str): Admin password
+
+        Returns:
+            tuple: (dict with message, token, username, HTTP status code) on success,
+                   (dict with error message, HTTP status code) on failure.
+        """
 
         # Find admin
         admin = AdminModel.find_by_username(data["username"])
@@ -91,13 +102,27 @@ class AdminController:
 
     @staticmethod
     def get_all_drivers():
-        """Return all drivers."""
+        """
+        Get all unassigned drivers from the drivers table.
+
+        Returns:
+            tuple: (dict with drivers list, HTTP status code 200).
+        """
         drivers = DriverModel.get_all_drivers()
         return {"drivers": drivers}, 200
 
     @staticmethod
     def assign_driver(driver_id):
-        """Assign a driver and remove from drivers table."""
+        """
+        Assign a driver by moving them from drivers table to assigned_drivers table.
+
+        Args:
+            driver_id (int): The ID of the driver to assign.
+
+        Returns:
+            tuple: (dict with success message, HTTP status code 200) on success,
+                   (dict with error message, HTTP status code 404) if driver not found.
+        """
         driver = DriverModel.find_by_id(driver_id)
         if not driver:
             return {"message": "Driver not found"}, 404
@@ -112,7 +137,16 @@ class AdminController:
 
     @staticmethod
     def delete_driver(driver_id):
-        """Delete a driver by ID."""
+        """
+        Delete a driver from the drivers table by ID.
+
+        Args:
+            driver_id (int): The ID of the driver to delete.
+
+        Returns:
+            tuple: (dict with success message, HTTP status code 200) on success,
+                   (dict with error message, HTTP status code 404) if driver not found.
+        """
         success = DriverModel.delete_driver(driver_id)
         if success:
             return {"message": "Driver deleted successfully"}, 200

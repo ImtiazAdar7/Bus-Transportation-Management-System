@@ -14,7 +14,15 @@ class PassengerController:
 
     @staticmethod
     def _verify_token(token):
-        """Verify JWT token and return passenger ID."""
+        """
+        Verify JWT token and extract passenger ID.
+
+        Args:
+            token (str): JWT token string.
+
+        Returns:
+            int or None: Passenger ID if token is valid, None otherwise.
+        """
         try:
             if not token:
                 return None
@@ -26,7 +34,24 @@ class PassengerController:
             return None
     @staticmethod
     def register(data):
-        """Register a new passenger."""
+        """
+        Register a new passenger.
+
+        Args:
+            data (dict): Passenger details with keys:
+                - first_name (str)
+                - last_name (str)
+                - age (str)
+                - username (str)
+                - email (str)
+                - dob (str, optional)
+                - gender (str)
+                - password (str)
+
+        Returns:
+            tuple: (dict with success message, HTTP status code 201) on success,
+                   (dict with error message, HTTP status code 400) if email exists.
+        """
         existing = PassengerModel.find_by_email(data["email"])
         if existing:
             return {"message": "Email already exists"}, 400
@@ -39,7 +64,18 @@ class PassengerController:
 
     @staticmethod
     def login(data):
-        """Passenger login and return JWT token."""
+        """
+        Login a passenger and return JWT token.
+
+        Args:
+            data (dict): Login credentials with keys:
+                - email (str): Passenger email
+                - password (str): Passenger password
+
+        Returns:
+            tuple: (dict with message, token, username, HTTP status code 200) on success,
+                   (dict with error message, HTTP status code 404/401) on failure.
+        """
         user = PassengerModel.find_by_email(data["email"])
         if not user:
             return {"message": "User not found"}, 404
@@ -64,7 +100,19 @@ class PassengerController:
 
     @staticmethod
     def create_booking(data, token):
-        """Create a new booking for the authenticated passenger."""
+        """
+        Create a new booking for the authenticated passenger.
+
+        Args:
+            data (dict): Booking details with keys:
+                - bus_route_id (int): ID of the bus route
+                - price (float): Booking price
+            token (str): JWT authentication token.
+
+        Returns:
+            tuple: (JSON response with booking_id, HTTP status code 201) on success,
+                   (JSON error response, HTTP status code 400/401/500) on failure.
+        """
         try:
             passenger_id = PassengerController._verify_token(token)
             if not passenger_id:
@@ -89,7 +137,16 @@ class PassengerController:
 
     @staticmethod
     def get_my_bookings(token):
-        """Get all bookings for the authenticated passenger."""
+        """
+        Get all bookings for the authenticated passenger.
+
+        Args:
+            token (str): JWT authentication token.
+
+        Returns:
+            tuple: (JSON response with bookings list, HTTP status code 200) on success,
+                   (JSON error response, HTTP status code 401/500) on failure.
+        """
         try:
             passenger_id = PassengerController._verify_token(token)
             if not passenger_id:

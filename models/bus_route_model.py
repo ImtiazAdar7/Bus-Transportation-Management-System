@@ -8,6 +8,16 @@ class BusRouteModel:
 
     @staticmethod
     def _fetchall(query: str, params: Tuple = ()) -> List[Dict]:
+        """
+        Execute a SELECT query and return all results.
+
+        Args:
+            query (str): SQL SELECT query string.
+            params (tuple): Query parameters for parameterized queries.
+
+        Returns:
+            List[Dict]: List of dictionaries representing query results.
+        """
         db = Config.get_db()
         cur = db.cursor(dictionary=True)
         cur.execute(query, params)
@@ -18,10 +28,25 @@ class BusRouteModel:
 
     @staticmethod
     def get_all_routes() -> List[Dict]:
+        """
+        Get all bus routes from the database.
+
+        Returns:
+            List[Dict]: List of all bus route records.
+        """
         return BusRouteModel._fetchall("SELECT * FROM bus_routes")
 
     @staticmethod
     def _parse_route(r: str) -> Tuple[str, str]:
+        """
+        Parse a route string in format "Source-Destination" into source and destination.
+
+        Args:
+            r (str): Route string in format "Source-Destination".
+
+        Returns:
+            Tuple[str, str]: Tuple of (source, destination) or ("", "") if invalid format.
+        """
         if not r or "-" not in r:
             return ("", "")
         a, b = r.split("-", 1)
@@ -29,6 +54,15 @@ class BusRouteModel:
 
     @staticmethod
     def _brand_to_type(brand: str) -> str:
+        """
+        Determine bus type (AC or Non-AC) based on brand name.
+
+        Args:
+            brand (str): Bus brand/operator name.
+
+        Returns:
+            str: "AC" if brand contains "green" or "hanif", "Non-AC" otherwise.
+        """
         if not brand:
             return "Non-AC"
         brand_lower = brand.lower()
@@ -38,6 +72,15 @@ class BusRouteModel:
 
     @staticmethod
     def _brand_rating(brand: str) -> float:
+        """
+        Get rating for a bus brand/operator.
+
+        Args:
+            brand (str): Bus brand/operator name.
+
+        Returns:
+            float: Rating value (4.5 for Green, 4.2 for Hanif, 4.0 for others, 3.5 if no brand).
+        """
         if not brand:
             return 3.5
         bl = brand.lower()
@@ -49,6 +92,17 @@ class BusRouteModel:
 
     @staticmethod
     def _estimate_fare(brand: str, src: str, dst: str) -> float:
+        """
+        Estimate fare for a route based on brand and distance approximation.
+
+        Args:
+            brand (str): Bus brand/operator name.
+            src (str): Source location name.
+            dst (str): Destination location name.
+
+        Returns:
+            float: Estimated fare rounded to 2 decimal places.
+        """
         base = 700.0
         if BusRouteModel._brand_to_type(brand) == "AC":
             base += 300.0
@@ -57,6 +111,12 @@ class BusRouteModel:
 
     @staticmethod
     def all_enriched_routes() -> List[Dict]:
+        """
+        Get all routes with enriched data including bus_type, operator, rating, fare, etc.
+
+        Returns:
+            List[Dict]: List of route dictionaries with enriched fields.
+        """
         routes = BusRouteModel.get_all_routes()
         enriched: List[Dict] = []
         for row in routes:
@@ -82,6 +142,13 @@ class BusRouteModel:
 
     @staticmethod
     def distinct_stations_and_operators() -> Dict[str, List[str]]:
+        """
+        Get distinct stations and operators from all routes.
+
+        Returns:
+            Dict[str, List[str]]: Dictionary with 'stations' and 'operators' keys,
+                                  each containing a sorted list of unique values.
+        """
         routes = BusRouteModel.get_all_routes()
         stations = set()
         operators = set()
@@ -205,7 +272,14 @@ class BusRouteModel:
     @staticmethod
     def suggest_alternatives(src: str, dst: str) -> List[Dict]:
         """
-        Suggest routes that share the source or the destination when no exact match.
+        Suggest alternative routes when no exact match is found.
+
+        Args:
+            src (str): Source location.
+            dst (str): Destination location.
+
+        Returns:
+            List[Dict]: List of up to 10 suggested routes that share source or destination.
         """
         routes = BusRouteModel.get_all_routes()
         src_norm = (src or "").strip().lower()
@@ -240,6 +314,15 @@ class BusRouteModel:
 
     @staticmethod
     def get_route_by_id(route_id: int) -> Optional[Dict]:
+        """
+        Get a bus route by its ID.
+
+        Args:
+            route_id (int): The ID of the route to retrieve.
+
+        Returns:
+            Optional[Dict]: Route dictionary if found, None otherwise.
+        """
         rows = BusRouteModel._fetchall(
             "SELECT * FROM bus_routes WHERE id=%s", (route_id,)
         )

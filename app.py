@@ -24,6 +24,12 @@ app.register_blueprint(analytics_bp)
 
 @app.get("/")
 def home():
+    """
+    Home endpoint for the Bus Management System API.
+
+    Returns:
+        dict: A welcome message for the Bus Management System Project.
+    """
     return {"message": "Bus Management System Project For CSE327"}
 
 if __name__ == "__main__":
