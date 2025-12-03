@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>models.booking_model &mdash; Bus Transportation Management System 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Bus Transportation Management System
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Core Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../controllers.html">Controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../models.html">Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../routes.html">Routes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Bus Transportation Management System</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">models.booking_model</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for models.booking_model</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Author: Imtiaz Ahmed 2013552642</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">config</span><span class="w"> </span><span class="kn">import</span> <span class="n">Config</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span>
+
+<div class="viewcode-block" id="BookingModel">
+<a class="viewcode-back" href="../../Bus-Transportation-Management-System-main.models.booking_model.html#models.booking_model.BookingModel">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">BookingModel</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Model to manage bookings.&quot;&quot;&quot;</span>
+    
+<div class="viewcode-block" id="BookingModel.create_table">
+<a class="viewcode-back" href="../../Bus-Transportation-Management-System-main.models.booking_model.html#models.booking_model.BookingModel.create_table">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">create_table</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create bookings table if it doesn&#39;t exist.</span>
+
+<span class="sd">        Creates table with foreign key constraints if referenced tables exist,</span>
+<span class="sd">        otherwise creates without foreign keys.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">db</span> <span class="o">=</span> <span class="n">Config</span><span class="o">.</span><span class="n">get_db</span><span class="p">()</span>
+        <span class="n">cursor</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+        
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Try to create with foreign keys first</span>
+            <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            CREATE TABLE IF NOT EXISTS bookings (</span>
+<span class="s2">                id INT AUTO_INCREMENT PRIMARY KEY,</span>
+<span class="s2">                bus_route_id INT NOT NULL,</span>
+<span class="s2">                passenger_id INT NOT NULL,</span>
+<span class="s2">                price DECIMAL(10,2) NOT NULL,</span>
+<span class="s2">                KEY bus_route_id (bus_route_id),</span>
+<span class="s2">                KEY passenger_id (passenger_id),</span>
+<span class="s2">                CONSTRAINT fk_bookings_bus_route FOREIGN KEY (bus_route_id) </span>
+<span class="s2">                    REFERENCES bus_routes(id) ON DELETE CASCADE ON UPDATE CASCADE,</span>
+<span class="s2">                CONSTRAINT fk_bookings_passenger FOREIGN KEY (passenger_id) </span>
+<span class="s2">                    REFERENCES passengers(id) ON DELETE CASCADE ON UPDATE CASCADE</span>
+<span class="s2">            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci</span>
+<span class="s2">            &quot;&quot;&quot;</span><span class="p">)</span>
+            <span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="c1"># If foreign keys fail (e.g., referenced tables don&#39;t exist yet), create without them</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">                CREATE TABLE IF NOT EXISTS bookings (</span>
+<span class="s2">                    id INT AUTO_INCREMENT PRIMARY KEY,</span>
+<span class="s2">                    bus_route_id INT NOT NULL,</span>
+<span class="s2">                    passenger_id INT NOT NULL,</span>
+<span class="s2">                    price DECIMAL(10,2) NOT NULL,</span>
+<span class="s2">                    KEY bus_route_id (bus_route_id),</span>
+<span class="s2">                    KEY passenger_id (passenger_id)</span>
+<span class="s2">                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci</span>
+<span class="s2">                &quot;&quot;&quot;</span><span class="p">)</span>
+                <span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="c1"># Table might already exist, which is fine</span>
+                <span class="n">db</span><span class="o">.</span><span class="n">rollback</span><span class="p">()</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="n">cursor</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="n">db</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+    
+<div class="viewcode-block" id="BookingModel.create_booking">
+<a class="viewcode-back" href="../../Bus-Transportation-Management-System-main.models.booking_model.html#models.booking_model.BookingModel.create_booking">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">create_booking</span><span class="p">(</span><span class="n">bus_route_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">passenger_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">price</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a new booking and return the booking ID.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            bus_route_id (int): ID of the bus route being booked.</span>
+<span class="sd">            passenger_id (int): ID of the passenger making the booking.</span>
+<span class="sd">            price (float): Price of the booking.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            int: The ID of the newly created booking.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Ensure table exists before creating booking</span>
+        <span class="n">BookingModel</span><span class="o">.</span><span class="n">create_table</span><span class="p">()</span>
+        
+        <span class="n">db</span> <span class="o">=</span> <span class="n">Config</span><span class="o">.</span><span class="n">get_db</span><span class="p">()</span>
+        <span class="n">cursor</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+        
+        <span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        INSERT INTO bookings (bus_route_id, passenger_id, price)</span>
+<span class="s2">        VALUES (</span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">)</span>
+<span class="s2">        &quot;&quot;&quot;</span>
+        
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">,</span> <span class="p">(</span><span class="n">bus_route_id</span><span class="p">,</span> <span class="n">passenger_id</span><span class="p">,</span> <span class="n">price</span><span class="p">))</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="n">booking_id</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">lastrowid</span>
+        
+        <span class="n">cursor</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">booking_id</span></div>
+
+    
+<div class="viewcode-block" id="BookingModel.get_bookings_by_passenger">
+<a class="viewcode-back" href="../../Bus-Transportation-Management-System-main.models.booking_model.html#models.booking_model.BookingModel.get_bookings_by_passenger">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_bookings_by_passenger</span><span class="p">(</span><span class="n">passenger_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get all bookings for a specific passenger with route details.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            passenger_id (int): ID of the passenger.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            List[Dict]: List of booking dictionaries with route information.</span>
+<span class="sd">                       Each booking includes booking_id, bus_route_id, passenger_id,</span>
+<span class="sd">                       price, operator, route, departure_time, and capacity.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            Exception: If database error occurs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Ensure table exists before querying</span>
+        <span class="n">BookingModel</span><span class="o">.</span><span class="n">create_table</span><span class="p">()</span>
+        
+        <span class="n">db</span> <span class="o">=</span> <span class="n">Config</span><span class="o">.</span><span class="n">get_db</span><span class="p">()</span>
+        <span class="n">cursor</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">cursor</span><span class="p">(</span><span class="n">dictionary</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            SELECT </span>
+<span class="s2">                b.id as booking_id,</span>
+<span class="s2">                b.bus_route_id,</span>
+<span class="s2">                b.passenger_id,</span>
+<span class="s2">                b.price,</span>
+<span class="s2">                br.brand as operator,</span>
+<span class="s2">                br.route,</span>
+<span class="s2">                br.time as departure_time,</span>
+<span class="s2">                br.capacity</span>
+<span class="s2">            FROM bookings b</span>
+<span class="s2">            JOIN bus_routes br ON b.bus_route_id = br.id</span>
+<span class="s2">            WHERE b.passenger_id = </span><span class="si">%s</span>
+<span class="s2">            ORDER BY b.id DESC</span>
+<span class="s2">            &quot;&quot;&quot;</span>
+            
+            <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">,</span> <span class="p">(</span><span class="n">passenger_id</span><span class="p">,))</span>
+            <span class="n">bookings</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+            
+            <span class="c1"># Convert Decimal to float for JSON serialization</span>
+            <span class="k">for</span> <span class="n">booking</span> <span class="ow">in</span> <span class="n">bookings</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s1">&#39;price&#39;</span> <span class="ow">in</span> <span class="n">booking</span> <span class="ow">and</span> <span class="n">booking</span><span class="p">[</span><span class="s1">&#39;price&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">booking</span><span class="p">[</span><span class="s1">&#39;price&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">booking</span><span class="p">[</span><span class="s1">&#39;price&#39;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="s1">&#39;departure_time&#39;</span> <span class="ow">in</span> <span class="n">booking</span> <span class="ow">and</span> <span class="n">booking</span><span class="p">[</span><span class="s1">&#39;departure_time&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">booking</span><span class="p">[</span><span class="s1">&#39;departure_time&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">booking</span><span class="p">[</span><span class="s1">&#39;departure_time&#39;</span><span class="p">])</span>
+            
+            <span class="k">return</span> <span class="n">bookings</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Database error: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="n">cursor</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="n">db</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+    
+<div class="viewcode-block" id="BookingModel.get_booking_by_id">
+<a class="viewcode-back" href="../../Bus-Transportation-Management-System-main.models.booking_model.html#models.booking_model.BookingModel.get_booking_by_id">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_booking_by_id</span><span class="p">(</span><span class="n">booking_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get a booking by its ID.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            booking_id (int): The ID of the booking to retrieve.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Optional[Dict]: Booking dictionary if found, None otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Ensure table exists before querying</span>
+        <span class="n">BookingModel</span><span class="o">.</span><span class="n">create_table</span><span class="p">()</span>
+        
+        <span class="n">db</span> <span class="o">=</span> <span class="n">Config</span><span class="o">.</span><span class="n">get_db</span><span class="p">()</span>
+        <span class="n">cursor</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">cursor</span><span class="p">(</span><span class="n">dictionary</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        
+        <span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;SELECT * FROM bookings WHERE id = </span><span class="si">%s</span><span class="s2">&quot;</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">,</span> <span class="p">(</span><span class="n">booking_id</span><span class="p">,))</span>
+        <span class="n">booking</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+        
+        <span class="n">cursor</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">booking</span></div>
+</div>
+
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Imtiaz Ahmed, Nahid Sarwar Ratul, Samiul Ahamed Fhyas, Sakibur Rahman Somoy.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -8,6 +8,15 @@ class Config:
 
     @staticmethod
     def get_db(test=False):
+        """
+        Get a database connection.
+
+        Args:
+            test (bool): If True, connects to test database, otherwise production database.
+
+        Returns:
+            mysql.connector.connection.MySQLConnection: Database connection object.
+        """
         return mysql.connector.connect(
             host="localhost",
             user="root",
